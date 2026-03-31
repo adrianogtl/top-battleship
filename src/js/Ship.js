@@ -1,4 +1,4 @@
-class Ship {
+export class Ship {
   #length;
   #hits;
 
@@ -23,13 +23,3 @@ class Ship {
     return this.hits >= this.#length ? true : false;
   }
 }
-
-const shipTypes = {
-  aircraftCarrier: 5,
-  cruiser: 4,
-  submarine: 3,
-  corvette: 2,
-  patrolBoat: 1,
-};
-
-export { Ship, shipTypes };
