@@ -1,5 +1,5 @@
 {
-  "name": "top-template",
+  "name": "top-battleship",
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
