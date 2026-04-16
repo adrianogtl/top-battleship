@@ -1,4 +1,4 @@
-import { Player } from "../js/Player.js";
+import Player from "../js/Player.js";
 describe("Player class", () => {
   const player = new Player("real");
   it("is a real player", () => {

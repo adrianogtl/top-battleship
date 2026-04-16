@@ -1,6 +1,6 @@
-import { Gameboard } from "./Gameboard.js";
+import Gameboard from "./Gameboard.js";
 
-export class Player {
+export default class Player {
   #type;
   #gameboard;
 

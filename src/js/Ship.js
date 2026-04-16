@@ -1,4 +1,4 @@
-export class Ship {
+export default class Ship {
   #length;
   #hits;
 

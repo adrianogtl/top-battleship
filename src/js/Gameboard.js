@@ -1,14 +1,20 @@
-export class Gameboard {
+export default class Gameboard {
   #ships;
+  #hitShots;
   #missedShots;
 
   constructor() {
     this.#ships = {};
+    this.#hitShots = [];
     this.#missedShots = [];
   }
 
   get ships() {
     return this.#ships;
+  }
+
+  get hitShots() {
+    return this.#hitShots;
   }
 
   get missedShots() {
@@ -37,8 +43,13 @@ export class Gameboard {
     const coords = `${x}, ${y}`;
     if (this.hasShip(x, y)) {
       this.#ships[coords].hit();
+      if (!this.#hitShots.includes(coords)) {
+        this.#hitShots.push(coords);
+      }
     } else {
-      this.#missedShots.push(coords);
+      if (!this.#missedShots.includes(coords)) {
+        this.#missedShots.push(coords);
+      }
     }
   }
 

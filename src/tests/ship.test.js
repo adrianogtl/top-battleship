@@ -1,4 +1,4 @@
-import { Ship } from "../js/Ship.js";
+import Ship from "../js/Ship.js";
 
 describe("Ship class", () => {
   it("creates ship with correct length", () => {
