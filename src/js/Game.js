@@ -14,7 +14,7 @@ export default class Game {
   #gameState;
 
   constructor() {
-    this.#humanPlayer = new Player("human");
+    this.#humanPlayer = new Player("you");
     this.#computerPlayer = new Player("computer");
     this.#gameState = "setup";
   }

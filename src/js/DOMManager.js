@@ -39,7 +39,8 @@ export default class DOMManager {
 
   renderSetup() {
     // Reset placed ship tracker if board is empty (fresh game)
-    const boardHasNoShips = Object.keys(this.#game.humanPlayer.gameboard.ships).length === 0;
+    const boardHasNoShips =
+      Object.keys(this.#game.humanPlayer.gameboard.ships).length === 0;
     if (boardHasNoShips && this.#placedShips.length > 0) {
       this.#placedShips = [];
       this.#selectedShip = null;
@@ -55,15 +56,19 @@ export default class DOMManager {
 
     const instructions = document.createElement("p");
     instructions.id = "instructions";
-    instructions.textContent = "Select a ship, then click on the board to place it.";
+    instructions.textContent =
+      "Select a ship, then click on the board to place it.";
 
     // Ship selection UI
     const shipSelector = document.createElement("div");
     shipSelector.id = "ship-selector";
 
+    const shipBtnContainer = document.createElement("div");
+    shipSelector.appendChild(shipBtnContainer);
+
     const shipsToPlace = DOMManager.SHIP_TYPES.filter(
       (shipType) =>
-        !this.#placedShips.find((placed) => placed.name === shipType.name)
+        !this.#placedShips.find((placed) => placed.name === shipType.name),
     );
 
     if (shipsToPlace.length > 0) {
@@ -81,7 +86,7 @@ export default class DOMManager {
           this.renderSetup();
         });
 
-        shipSelector.appendChild(btn);
+        shipBtnContainer.appendChild(btn);
       });
 
       // Direction toggle
@@ -103,6 +108,9 @@ export default class DOMManager {
 
     this.renderBoard(boardContainer, this.#game.humanPlayer, true);
 
+    const footer = document.createElement("div");
+    footer.id = "footer";
+
     const placedList = document.createElement("p");
     placedList.id = "placed-ships";
     placedList.textContent = `Ships placed: ${this.#placedShips.length}/${DOMManager.SHIP_TYPES.length}`;
@@ -110,20 +118,15 @@ export default class DOMManager {
     const startBtn = document.createElement("button");
     startBtn.id = "start-btn";
     startBtn.textContent = "Start Game";
-    startBtn.disabled = this.#placedShips.length !== DOMManager.SHIP_TYPES.length;
+    startBtn.disabled =
+      this.#placedShips.length !== DOMManager.SHIP_TYPES.length;
     startBtn.addEventListener("click", () => {
       this.#game.startGame();
       this.render();
     });
 
-    root.append(
-      title,
-      instructions,
-      shipSelector,
-      boardContainer,
-      placedList,
-      startBtn
-    );
+    footer.append(placedList, startBtn);
+    root.append(title, instructions, shipSelector, boardContainer, footer);
     document.body.appendChild(root);
   }
 
@@ -139,7 +142,7 @@ export default class DOMManager {
     const status = document.createElement("div");
     status.id = "status";
     if (this.#isComputerTurn) {
-      status.textContent = "Enemy's turn to attack...";
+      status.textContent = "Computer's turn to attack...";
       status.classList.add("enemy-turn");
     } else {
       status.textContent = "Your turn to attack";
@@ -161,10 +164,14 @@ export default class DOMManager {
     const enemySection = document.createElement("div");
     enemySection.className = "player-section";
     const enemyLabel = document.createElement("h3");
-    enemyLabel.textContent = "Enemy Board";
+    enemyLabel.textContent = "Computer Board";
     const enemyBoard = document.createElement("div");
     enemyBoard.className = "board";
-    this.renderBoard(enemyBoard, this.#game.computerPlayer, !this.#isComputerTurn);
+    this.renderBoard(
+      enemyBoard,
+      this.#game.computerPlayer,
+      !this.#isComputerTurn,
+    );
     enemySection.append(enemyLabel, enemyBoard);
 
     container.append(playerSection, enemySection);
@@ -185,7 +192,7 @@ export default class DOMManager {
     const winner = this.#game.getWinner();
     const message = document.createElement("p");
     message.id = "winner-message";
-    message.textContent = `${winner.type.toUpperCase()} wins the game!`;
+    message.textContent = `${winner.type.toUpperCase()} won the game!`;
 
     // Show final boards
     const boardContainer = document.createElement("div");
@@ -290,13 +297,7 @@ export default class DOMManager {
 
       // Place the ship
       const ship = new Ship(this.#selectedShip.length);
-      this.#game.placeShip(
-        player,
-        ship,
-        x,
-        y,
-        this.#shipDirection
-      );
+      this.#game.placeShip(player, ship, x, y, this.#shipDirection);
 
       // Track as placed
       this.#placedShips.push(this.#selectedShip);
